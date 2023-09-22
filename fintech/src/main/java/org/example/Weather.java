@@ -3,7 +3,10 @@ package org.example;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter  @Getter
 public class Weather {
 
     private static Map<Integer, String> region = new HashMap<>();
@@ -30,48 +33,7 @@ public class Weather {
                 '}';
     }
 
-    public static Map<Integer, String> getRegion() {
-        return region;
-    }
-
     public static String getRegionNameById(int regionId) {
         return region.get(regionId);
     }
-
-    public static void setRegion(Map<Integer, String> region) {
-        Weather.region = region;
-    }
-
-    public int getRegionId() {
-        return regionId;
-    }
-
-    public void setRegionId(int regionId) {
-        this.regionId = regionId;
-    }
-
-    public String getRegionName() {
-        return regionName;
-    }
-
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
-    }
-
-    public double getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(int temperature) {
-        this.temperature = temperature;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
 }

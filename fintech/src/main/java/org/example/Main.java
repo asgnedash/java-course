@@ -32,7 +32,7 @@ public class Main {
                 ));
 
         avgTemperature.forEach((regionId, avgTemp) -> {
-            System.out.println(Weather.getRegionNameById(regionId) + ": " + Math.round(avgTemp * 100) / 100.0 + " ℃");
+            System.out.println(Weather.getRegionNameById(regionId) + ": " + Math.round(avgTemp * 100) / 100.0);
         });
     }
 
@@ -71,7 +71,7 @@ public class Main {
 
         System.out.println("\nA map with temperature as the key and a collection of Weather objects:");
         toMapTempWeather(weatherList).forEach((temperature, weatherObjects) -> {
-            System.out.println(temperature + "℃ : " + weatherObjects.toString());
+            System.out.println(temperature + " : " + weatherObjects.toString());
         });
 
     }
