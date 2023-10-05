@@ -16,12 +16,12 @@ public class Main {
 
     public static ArrayList<Weather> weatherInit() {
         ArrayList<Weather> weatherList = new ArrayList<>();
-        weatherList.add(new Weather(1, "Moscow", -7, LocalDateTime.of(2022, 1, 16, 10, 15, 0)));
-        weatherList.add(new Weather(2, "Saint Petersburg", -3, LocalDateTime.of(2023, 2, 15, 12, 10, 0)));
-        weatherList.add(new Weather(3, "Tallinn", 4, LocalDateTime.of(2022, 3, 17, 23, 5, 0)));
-        weatherList.add(new Weather(2, "Saint Petersburg", 13, LocalDateTime.of(2023, 4, 23, 13, 0, 0)));
-        weatherList.add(new Weather(2, "Saint Petersburg", 24, LocalDateTime.of(2023, 5, 30, 16, 35, 0)));
-        weatherList.add(new Weather(1, "Moscow", 24, LocalDateTime.of(2023, 6, 1, 17, 30, 0)));
+        weatherList.add(new Weather("Moscow", -7, LocalDateTime.of(2022, 1, 16, 10, 15, 0)));
+        weatherList.add(new Weather("Saint Petersburg", -3, LocalDateTime.of(2023, 2, 15, 12, 10, 0)));
+        weatherList.add(new Weather("Tallinn", 4, LocalDateTime.of(2022, 3, 17, 23, 5, 0)));
+        weatherList.add(new Weather("Saint Petersburg", 13, LocalDateTime.of(2023, 4, 23, 13, 0, 0)));
+        weatherList.add(new Weather("Saint Petersburg", 24, LocalDateTime.of(2023, 5, 30, 16, 35, 0)));
+        weatherList.add(new Weather("Moscow", 24, LocalDateTime.of(2023, 6, 1, 17, 30, 0)));
         return weatherList;
     }
 

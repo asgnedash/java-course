@@ -9,18 +9,23 @@ import lombok.Setter;
 @Setter  @Getter
 public class Weather {
 
-    private static Map<Integer, String> region = new HashMap<>();
+    private static int id = 1;
+    private static Map<String, Integer> region = new HashMap<String, Integer>();
     private int regionId;
     private String regionName;
     private double temperature;
     private LocalDateTime timestamp;
 
-    public Weather(int regionId, String regionName, double temperature, LocalDateTime timestamp) {
-        this.regionId = regionId;
+    public Weather(String regionName, double temperature, LocalDateTime timestamp) {
         this.regionName = regionName;
         this.temperature = temperature;
         this.timestamp = timestamp;
-        Weather.region.put(regionId, regionName);
+        if (region.containsKey(regionName)) {
+            this.regionId = region.get(regionName);
+        } else {
+            this.regionId = id++;
+        }
+        region.put(regionName, regionId);
     }
 
     @Override
@@ -34,6 +39,11 @@ public class Weather {
     }
 
     public static String getRegionNameById(int regionId) {
-        return region.get(regionId);
+        for (Map.Entry<String, Integer> entry : region.entrySet()) {
+            if (entry.getValue() == regionId) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }
