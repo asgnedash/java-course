@@ -17,12 +17,26 @@ public class WeatherService {
         regionsTempOver()   - Finds regions where the temperature could be higher than the specified value.
         toMapIdTemp()       - Converts the list of Weather objects into a map with regionId in keys and list of temperatures in each region in values.
         toMapTempWeather()  - Converts the list of Weather objects into a map with temperature in keys and collections of Weather objects with the same temperature as the key in values.
+
+        createWeather()         - (C) Creates the weather object.
+        readTemperatureByCity() - (R) Reads a temperature value by the specified city.
+        updateWeather()         - (U) Updates existing weather object or creates a new one.
+        deleteWeather()         - (D) Deletes all weather objects with the specified city.
     */
 
     static ArrayList<Weather> weatherList;
 
     static {
         weatherList = weatherInit();
+    }
+
+    public int createWeather(Weather weather) {
+        weatherList.add(weather);
+        if (weatherList.contains(weather)) {
+            return 201;
+        } else {
+            return 500;
+        }
     }
 
     public Double readTemperatureByCity(String regionName) {
@@ -36,6 +50,29 @@ public class WeatherService {
 
         return temperature.orElseGet(() -> null);
 
+    }
+
+    public int updateWeather(Weather weather) {
+        boolean isInTheList = false;
+        for (Weather i: weatherList) {
+            if (weather.getRegionId() == i.getRegionId() && weather.getTimestamp() == i.getTimestamp()) {
+                i.setTemperature(weather.getTemperature());
+                isInTheList = true;
+            }
+        }
+        if (!isInTheList) {
+            weatherList.add(weather);
+            return 201;
+        }
+        if (weatherList.contains(weather)) {
+            return 200;
+        } else {
+            return 500;
+        }
+    }
+
+    public void deleteWeather(String regionName) {
+        weatherList.removeIf(region -> region.getRegionName().equals(regionName));
     }
 
     public static ArrayList<Weather> weatherInit() {
@@ -81,7 +118,7 @@ public class WeatherService {
                 .collect(Collectors.groupingBy(Weather::getTemperature));
     }
 
-
+    /*
     public static void main(String[] args) {
 
         ArrayList<Weather> weatherList = weatherInit();
@@ -102,5 +139,7 @@ public class WeatherService {
         });
 
     }
+
+     */
 
 }
