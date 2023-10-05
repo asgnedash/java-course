@@ -1,10 +1,12 @@
-package org.example;
+package org.example.fintech.service;
+
+import org.example.fintech.model.Weather;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Main {
+public class WeatherService {
 
     /*
         weatherInit()       - Creates a list of Weather objects.
@@ -54,6 +56,7 @@ public class Main {
         return weatherList.stream()
                 .collect(Collectors.groupingBy(Weather::getTemperature));
     }
+
 
     public static void main(String[] args) {
 
