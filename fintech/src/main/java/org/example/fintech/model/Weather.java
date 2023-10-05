@@ -3,17 +3,27 @@ package org.example.fintech.model;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
 import lombok.Getter;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Setter  @Getter
 public class Weather {
 
     private static int id = 1;
     private static Map<String, Integer> region = new HashMap<String, Integer>();
+
+    @JsonProperty("region_id")
     private int regionId;
+
+    @JsonProperty("region_name")
     private String regionName;
+
+    @JsonProperty("temperature")
     private double temperature;
+
+    @JsonProperty("timestamp")
     private LocalDateTime timestamp;
 
     public Weather(String regionName, double temperature, LocalDateTime timestamp) {

@@ -1,11 +1,14 @@
 package org.example.fintech.service;
 
 import org.example.fintech.model.Weather;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class WeatherService {
 
     /*
@@ -16,6 +19,25 @@ public class WeatherService {
         toMapTempWeather()  - Converts the list of Weather objects into a map with temperature in keys and collections of Weather objects with the same temperature as the key in values.
     */
 
+    static ArrayList<Weather> weatherList;
+
+    static {
+        weatherList = weatherInit();
+    }
+
+    public Double readTemperatureByCity(String regionName) {
+        LocalDate date = LocalDate.now();
+
+        Optional<Double> temperature = weatherList.stream()
+                .filter(weather -> weather.getRegionName().equals(regionName))
+                .filter(weather -> weather.getTimestamp().toLocalDate().isEqual(date))
+                .map(Weather::getTemperature)
+                .findFirst();
+
+        return temperature.orElseGet(() -> null);
+
+    }
+
     public static ArrayList<Weather> weatherInit() {
         ArrayList<Weather> weatherList = new ArrayList<>();
         weatherList.add(new Weather("Moscow", -7, LocalDateTime.of(2022, 1, 16, 10, 15, 0)));
@@ -24,6 +46,8 @@ public class WeatherService {
         weatherList.add(new Weather("Saint Petersburg", 13, LocalDateTime.of(2023, 4, 23, 13, 0, 0)));
         weatherList.add(new Weather("Saint Petersburg", 24, LocalDateTime.of(2023, 5, 30, 16, 35, 0)));
         weatherList.add(new Weather("Moscow", 24, LocalDateTime.of(2023, 6, 1, 17, 30, 0)));
+        //for testing readTemperatureByCity function:
+        weatherList.add(new Weather("Moscow", 15, LocalDateTime.now()));
         return weatherList;
     }
 
