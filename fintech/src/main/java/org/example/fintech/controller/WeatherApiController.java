@@ -25,7 +25,7 @@ public class WeatherApiController {
     /*, responses = {
             @ApiResponse(...)
     })*/
-    @GetMapping("/{city}")
+   @GetMapping("/{city}")
     public ResponseEntity<String> getWeather(@PathVariable String city) {
         return weatherApiService.getCurrentWeather(city);
     }
