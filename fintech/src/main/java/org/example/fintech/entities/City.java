@@ -1,6 +1,7 @@
 package org.example.fintech.entities;
 
 import jakarta.persistence.*;
+import jdk.jshell.Snippet;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,4 +16,5 @@ public class City {
 
     @Column(name = "city", nullable = false, length = 255)
     private String city;
+
 }

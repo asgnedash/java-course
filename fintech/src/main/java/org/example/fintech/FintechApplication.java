@@ -3,13 +3,12 @@ package org.example.fintech;
 import org.example.fintech.entities.City;
 import org.example.fintech.entities.Weather;
 import org.example.fintech.entities.WeatherType;
-import org.example.fintech.service.CityService;
-import org.example.fintech.service.WeatherService;
-import org.example.fintech.service.WeatherTypeService;
+import org.example.fintech.service.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
@@ -18,9 +17,36 @@ public class FintechApplication {
     public static void main(String[] args) {
         SpringApplication.run(FintechApplication.class, args);
 
+        /*Testing the functionality of JDBC*/
+
         /*
-        Testing the functionality of Hibernate
-         */
+        CityJdbcService city JdbcService = new CityJdbcService();
+        cityJdbcService.create("Lipetsk");
+        cityJdbcService.getById(327L);
+        cityJdbcService.getAll();
+        cityJdbcService.update(327L, "Yakutsk");
+        cityJdbcService.delete(327L);
+
+        WeatherTypeJdbcService weatherTypeJdbcService = new WeatherTypeJdbcService();
+        weatherTypeJdbcService.create("Heavy Rain");
+        weatherTypeJdbcService.getById(199L);
+        weatherTypeJdbcService.getAll();
+        weatherTypeJdbcService.update(199L, "Heavy Snow");
+        weatherTypeJdbcService.delete(199L);
+
+
+        WeatherJdbcService weatherJdbcService = new WeatherJdbcService();
+        weatherJdbcService.create("Moscow", "Snow", -3.1F, Timestamp.valueOf(LocalDateTime.now()));
+        weatherJdbcService.create("Moskva", "Snow", -3.1F, Timestamp.valueOf(LocalDateTime.now()));
+        weatherJdbcService.create("Moscow", "Sneg", -3.1F, Timestamp.valueOf(LocalDateTime.now()));
+        weatherJdbcService.getAll();
+        weatherJdbcService.getById(1L);
+        weatherJdbcService.update(1L, 12.1F);
+        weatherJdbcService.delete(1L);
+        */
+
+
+        /*Testing the functionality of Hibernate*/
 
         /*
         ConfigurableApplicationContext context = SpringApplication.run(FintechApplication.class, args);
@@ -66,6 +92,14 @@ public class FintechApplication {
         context.close();
 
          */
+
+
+
+        /*
+        Testing the functionality of JDBC
+         */
+
+
     }
 
 }
