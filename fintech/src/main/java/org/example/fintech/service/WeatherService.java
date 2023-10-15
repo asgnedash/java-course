@@ -1,6 +1,8 @@
 package org.example.fintech.service;
 
 import org.example.fintech.model.Weather;
+import org.example.fintech.repository.WeatherRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -54,7 +56,7 @@ public class WeatherService {
 
     public int updateWeather(Weather weather) {
         boolean isInTheList = false;
-        for (Weather i: weatherList) {
+        for (Weather i : weatherList) {
             if (weather.getRegionId() == i.getRegionId() && weather.getTimestamp() == i.getTimestamp()) {
                 i.setTemperature(weather.getTemperature());
                 isInTheList = true;
@@ -141,5 +143,27 @@ public class WeatherService {
     }
 
      */
+
+    private WeatherRepository weatherRepository;
+
+    public WeatherService() {
+    }
+
+    @Autowired
+    public WeatherService(WeatherRepository weatherRepository) {
+        this.weatherRepository = weatherRepository;
+    }
+
+    public void saveWeather(org.example.fintech.entities.Weather weather) {
+        weatherRepository.save(weather);
+    }
+
+    public org.example.fintech.entities.Weather getWeatherById(Long id) {
+        return weatherRepository.findById(id).orElse(null);
+    }
+
+    public void deleteWeatherById(Long id) {
+        weatherRepository.deleteById(id);
+    }
 
 }
