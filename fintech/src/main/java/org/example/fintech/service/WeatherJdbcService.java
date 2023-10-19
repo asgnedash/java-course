@@ -1,12 +1,14 @@
 package org.example.fintech.service;
 
+import org.example.fintech.model.Weather;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
 
 @Service
 public class WeatherJdbcService {
-    public void create(String city, String type, float temperature, Timestamp timestamp) {
+
+    public void create(String city, String type, double temperature, Timestamp timestamp) {
         Boolean isCityExists = true;
         Boolean isWeatherTypeExists = true;
         long city_id = 0, weather_type_id = 0;
@@ -33,6 +35,22 @@ public class WeatherJdbcService {
                 isWeatherTypeExists = false;
             }
 
+            if (!isCityExists) {
+                CityJdbcService cityJdbcService = new CityJdbcService();
+                cityJdbcService.create(city);
+            }
+
+            if (!isWeatherTypeExists) {
+                WeatherTypeJdbcService weatherTypeJdbcService = new WeatherTypeJdbcService();
+                weatherTypeJdbcService.create(type);
+            }
+            PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, city_id);
+            preparedStatement.setLong(2, weather_type_id);
+            preparedStatement.setDouble(3, temperature);
+            preparedStatement.setTimestamp(4, timestamp);
+            preparedStatement.executeUpdate();
+            /*
             if (isCityExists && isWeatherTypeExists) {
                 PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setLong(1, city_id);
@@ -43,6 +61,7 @@ public class WeatherJdbcService {
             } else {
                 System.out.println("Incorrect city and/or weather type");
             }
+             */
 
 
         } catch (SQLException e) {
@@ -107,5 +126,4 @@ public class WeatherJdbcService {
             e.printStackTrace();
         }
     }
-
 }

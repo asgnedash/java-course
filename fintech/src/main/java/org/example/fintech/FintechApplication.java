@@ -92,14 +92,6 @@ public class FintechApplication {
         context.close();
 
          */
-
-
-
-        /*
-        Testing the functionality of JDBC
-         */
-
-
     }
 
 }

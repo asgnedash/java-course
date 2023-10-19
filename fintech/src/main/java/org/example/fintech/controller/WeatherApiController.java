@@ -1,11 +1,16 @@
 package org.example.fintech.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.example.fintech.model.WeatherApi;
 import org.example.fintech.service.WeatherApiService;
+import org.example.fintech.service.WeatherJdbcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/weather")
@@ -72,6 +80,22 @@ public class WeatherApiController {
     })
    @GetMapping("/{city}")
     public Mono<String> getWeather(@PathVariable String city) {
-        return weatherApiService.getCurrentWeather(city);
+        return weatherApiService.getCurrentWeather(city)
+                .map(json -> {
+                    try {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        JsonNode jsonNode = objectMapper.readTree(json);
+                        String name = jsonNode.get("location").get("name").asText();
+                        double temp_c = jsonNode.get("current").get("temp_c").asDouble();
+                        String text = jsonNode.get("current").get("condition").get("text").asText();
+
+                        WeatherJdbcService weatherJdbcService = new WeatherJdbcService();
+                        weatherJdbcService.create(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
+
+                        return json;
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException("Failed to process weather data", e);
+                    }
+                });
     }
 }
