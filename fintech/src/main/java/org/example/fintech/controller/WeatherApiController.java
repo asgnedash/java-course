@@ -33,6 +33,9 @@ public class WeatherApiController {
         this.weatherApiService = weatherApiService;
     }
 
+    @Autowired
+    WeatherJdbcService weatherJdbcService;
+
     @Operation(summary = "Receive the weather")
     @ApiResponses(value = {
             @ApiResponse(
@@ -89,7 +92,6 @@ public class WeatherApiController {
                         double temp_c = jsonNode.get("current").get("temp_c").asDouble();
                         String text = jsonNode.get("current").get("condition").get("text").asText();
 
-                        WeatherJdbcService weatherJdbcService = new WeatherJdbcService();
                         weatherJdbcService.createWithReadUncommittedIsolation(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
                         weatherJdbcService.createWithReadCommittedIsolation(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
                         weatherJdbcService.createWithRepeatableReadIsolation(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));

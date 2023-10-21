@@ -4,9 +4,14 @@ import org.example.fintech.entities.City;
 import org.example.fintech.entities.Weather;
 import org.example.fintech.entities.WeatherType;
 import org.example.fintech.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.event.EventListener;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -14,10 +19,30 @@ import java.time.LocalDateTime;
 @SpringBootApplication
 public class FintechApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(FintechApplication.class, args);
+    /*Database isolation test*/
 
-        /*Testing the functionality of JDBC*/
+    /*
+    private final WeatherJdbcService weatherJdbcService;
+
+    @Autowired
+    public FintechApplication(WeatherJdbcService weatherJdbcService) {
+        this.weatherJdbcService = weatherJdbcService;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void testIsolation() {
+        weatherJdbcService.jdbcCreate("Rostov", "Snow", -3, Timestamp.valueOf(LocalDateTime.now()));
+        weatherJdbcService.createWithReadUncommittedIsolation("Velikiy Novgorod", "Rain", 12.4, Timestamp.valueOf(LocalDateTime.now()));
+        weatherJdbcService.createWithReadCommittedIsolation("Kaluga", "Cloudy", -3.2, Timestamp.valueOf(LocalDateTime.now()));
+        weatherJdbcService.createWithRepeatableReadIsolation("Moscow", "Fog", 12, Timestamp.valueOf(LocalDateTime.now()));
+        weatherJdbcService.createWithSerializableIsolation("Penza", "HHHH", 2.2, Timestamp.valueOf(LocalDateTime.now()));
+    }*/
+
+        public static void main (String[]args){
+            SpringApplication.run(FintechApplication.class, args);
+
+
+            /*Testing the functionality of JDBC*/
 
         /*
         CityJdbcService city JdbcService = new CityJdbcService();
@@ -46,7 +71,7 @@ public class FintechApplication {
         */
 
 
-        /*Testing the functionality of Hibernate*/
+            /*Testing the functionality of Hibernate*/
 
         /*
         ConfigurableApplicationContext context = SpringApplication.run(FintechApplication.class, args);
@@ -92,6 +117,6 @@ public class FintechApplication {
         context.close();
 
          */
-    }
+        }
 
-}
+    }

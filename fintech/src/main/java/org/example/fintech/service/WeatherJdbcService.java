@@ -1,16 +1,24 @@
 package org.example.fintech.service;
 
-import org.example.fintech.model.Weather;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.sql.*;
 
-import static org.springframework.transaction.annotation.Isolation.READ_UNCOMMITTED;
-
 @Service
 public class WeatherJdbcService {
+
+    private TransactionTemplate transactionTemplate;
+
+    @Autowired
+    public WeatherJdbcService(TransactionTemplate transactionTemplate) {
+        this.transactionTemplate = transactionTemplate;
+    }
 
     public void create(String city, String type, double temperature, Timestamp timestamp) {
         Boolean isCityExists = true;
@@ -24,7 +32,7 @@ public class WeatherJdbcService {
             PreparedStatement preparedStatementCityCheck = con.prepareStatement(sqlCityCheck, Statement.RETURN_GENERATED_KEYS);
             preparedStatementCityCheck.setString(1, city);
             ResultSet resultSetCity = preparedStatementCityCheck.executeQuery();
-            if (resultSetCity.next()) {
+            if (resultSetCity.first()) {
                 city_id = resultSetCity.getLong("id");
             } else {
                 isCityExists = false;
@@ -33,7 +41,7 @@ public class WeatherJdbcService {
             PreparedStatement preparedStatementWeatherTypeCheck = con.prepareStatement(sqlWeatherTypeCheck, Statement.RETURN_GENERATED_KEYS);
             preparedStatementWeatherTypeCheck.setString(1, type);
             ResultSet resultSetWeatherType = preparedStatementWeatherTypeCheck.executeQuery();
-            if (resultSetWeatherType.next()) {
+            if (resultSetWeatherType.first()) {
                 weather_type_id = resultSetWeatherType.getLong("id");
             } else {
                 isWeatherTypeExists = false;
@@ -42,11 +50,15 @@ public class WeatherJdbcService {
             if (!isCityExists) {
                 CityJdbcService cityJdbcService = new CityJdbcService();
                 cityJdbcService.create(city);
+                city_id = preparedStatementCityCheck.executeQuery().getLong("id");
+                System.out.println(city_id);
             }
 
             if (!isWeatherTypeExists) {
                 WeatherTypeJdbcService weatherTypeJdbcService = new WeatherTypeJdbcService();
                 weatherTypeJdbcService.create(type);
+                weather_type_id = preparedStatementWeatherTypeCheck.executeQuery().getLong("id");
+                System.out.println(weather_type_id);
             }
             PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, city_id);
@@ -54,25 +66,23 @@ public class WeatherJdbcService {
             preparedStatement.setDouble(3, temperature);
             preparedStatement.setTimestamp(4, timestamp);
             preparedStatement.executeUpdate();
-            /*
-            if (isCityExists && isWeatherTypeExists) {
-                PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setLong(1, city_id);
-                preparedStatement.setLong(2, weather_type_id);
-                preparedStatement.setFloat(3, temperature);
-                preparedStatement.setTimestamp(4, timestamp);
-                preparedStatement.executeUpdate();
-            } else {
-                System.out.println("Incorrect city and/or weather type");
-            }
-             */
-
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+    }
 
+    public void jdbcCreate(String city, String type, double temperature, Timestamp timestamp) {
+        transactionTemplate.execute(status -> {
+            try {
+                create(city, type, temperature, timestamp);
+            } catch (Exception e) {
+                status.setRollbackOnly();
+                throw new RuntimeException();
+            }
+            return null;
+        });
     }
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
