@@ -2,8 +2,12 @@ package org.example.fintech.service;
 
 import org.example.fintech.model.Weather;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.*;
+
+import static org.springframework.transaction.annotation.Isolation.READ_UNCOMMITTED;
 
 @Service
 public class WeatherJdbcService {
@@ -69,6 +73,26 @@ public class WeatherJdbcService {
         }
 
 
+    }
+
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    public void createWithReadUncommittedIsolation(String city, String type, double temperature, Timestamp timestamp) {
+        create(city, type, temperature, timestamp);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void createWithReadCommittedIsolation(String city, String type, double temperature, Timestamp timestamp) {
+        create(city, type, temperature, timestamp);
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public void createWithRepeatableReadIsolation(String city, String type, double temperature, Timestamp timestamp) {
+        create(city, type, temperature, timestamp);
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public void createWithSerializableIsolation(String city, String type, double temperature, Timestamp timestamp) {
+        create(city, type, temperature, timestamp);
     }
 
     public void getById(Long id) {

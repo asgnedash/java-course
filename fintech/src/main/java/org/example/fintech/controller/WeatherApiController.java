@@ -90,7 +90,10 @@ public class WeatherApiController {
                         String text = jsonNode.get("current").get("condition").get("text").asText();
 
                         WeatherJdbcService weatherJdbcService = new WeatherJdbcService();
-                        weatherJdbcService.create(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
+                        weatherJdbcService.createWithReadUncommittedIsolation(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
+                        weatherJdbcService.createWithReadCommittedIsolation(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
+                        weatherJdbcService.createWithRepeatableReadIsolation(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
+                        weatherJdbcService.createWithSerializableIsolation(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
 
                         return json;
                     } catch (JsonProcessingException e) {
