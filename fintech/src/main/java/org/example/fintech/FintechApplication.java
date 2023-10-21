@@ -1,19 +1,59 @@
 package org.example.fintech;
 
-import org.example.fintech.entities.City;
-import org.example.fintech.entities.Weather;
-import org.example.fintech.entities.WeatherType;
-import org.example.fintech.service.CityService;
-import org.example.fintech.service.WeatherService;
-import org.example.fintech.service.WeatherTypeService;
+import org.example.fintech.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class FintechApplication {
+
+    /*Testing of functionality of JDBC*/
+
+    /*
+    private final CityJdbcService cityJdbcService;
+    private final WeatherTypeJdbcService weatherTypeJdbcService;
+    private final WeatherJdbcService weatherJdbcService;
+
+    @Autowired
+    public FintechApplication(CityJdbcService cityJdbcService, WeatherTypeJdbcService weatherTypeJdbcService, WeatherJdbcService weatherJdbcService) {
+        this.cityJdbcService = cityJdbcService;
+        this.weatherTypeJdbcService = weatherTypeJdbcService;
+        this.weatherJdbcService = weatherJdbcService;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void testJdbc() {
+
+        cityJdbcService.create("Anapa");
+        System.out.println(cityJdbcService.getById(807L));
+        System.out.println(cityJdbcService.getAll());
+        cityJdbcService.update(807L, "Gelendzhik");
+        System.out.println(cityJdbcService.getById(807L));
+        cityJdbcService.delete(807L);
+        System.out.println(cityJdbcService.getById(807L));
+
+        weatherTypeJdbcService.create("Haze");
+        System.out.println(weatherTypeJdbcService.getAll());
+        weatherTypeJdbcService.update(165L, "Rain");
+        System.out.println(weatherTypeJdbcService.getById(165L));
+        weatherTypeJdbcService.delete(165L);
+
+
+        weatherJdbcService.create("Perm", "Snow", 12.3, Timestamp.valueOf(LocalDateTime.now()));
+        System.out.println(weatherJdbcService.getAll());
+        weatherJdbcService.update(2L, -20.1);
+        System.out.println(weatherJdbcService.getById(2L));
+        weatherJdbcService.delete(2L);
+        System.out.println(weatherJdbcService.getById(2L));
+    }
+
+     */
 
     public static void main(String[] args) {
         SpringApplication.run(FintechApplication.class, args);
