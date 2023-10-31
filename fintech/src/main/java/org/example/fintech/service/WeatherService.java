@@ -1,10 +1,15 @@
-package org.example;
+package org.example.fintech.service;
 
+import org.example.fintech.model.Weather;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Main {
+@Service
+public class WeatherService {
 
     /*
         weatherInit()       - Creates a list of Weather objects.
@@ -12,16 +17,74 @@ public class Main {
         regionsTempOver()   - Finds regions where the temperature could be higher than the specified value.
         toMapIdTemp()       - Converts the list of Weather objects into a map with regionId in keys and list of temperatures in each region in values.
         toMapTempWeather()  - Converts the list of Weather objects into a map with temperature in keys and collections of Weather objects with the same temperature as the key in values.
+
+        createWeather()         - (C) Creates the weather object.
+        readTemperatureByCity() - (R) Reads a temperature value by the specified city.
+        updateWeather()         - (U) Updates existing weather object or creates a new one.
+        deleteWeather()         - (D) Deletes all weather objects with the specified city.
     */
+
+    static ArrayList<Weather> weatherList;
+
+    static {
+        weatherList = weatherInit();
+    }
+
+    public int createWeather(Weather weather) {
+        weatherList.add(weather);
+        if (weatherList.contains(weather)) {
+            return 201;
+        } else {
+            return 500;
+        }
+    }
+
+    public Double readTemperatureByCity(String regionName) {
+        LocalDate date = LocalDate.now();
+
+        Optional<Double> temperature = weatherList.stream()
+                .filter(weather -> weather.getRegionName().equals(regionName))
+                .filter(weather -> weather.getTimestamp().toLocalDate().isEqual(date))
+                .map(Weather::getTemperature)
+                .findFirst();
+
+        return temperature.orElseGet(() -> null);
+
+    }
+
+    public int updateWeather(Weather weather) {
+        boolean isInTheList = false;
+        for (Weather i: weatherList) {
+            if (weather.getRegionId() == i.getRegionId() && weather.getTimestamp() == i.getTimestamp()) {
+                i.setTemperature(weather.getTemperature());
+                isInTheList = true;
+            }
+        }
+        if (!isInTheList) {
+            weatherList.add(weather);
+            return 201;
+        }
+        if (weatherList.contains(weather)) {
+            return 200;
+        } else {
+            return 500;
+        }
+    }
+
+    public void deleteWeather(String regionName) {
+        weatherList.removeIf(region -> region.getRegionName().equals(regionName));
+    }
 
     public static ArrayList<Weather> weatherInit() {
         ArrayList<Weather> weatherList = new ArrayList<>();
-        weatherList.add(new Weather(1, "Moscow", -7, LocalDateTime.of(2022, 1, 16, 10, 15, 0)));
-        weatherList.add(new Weather(2, "Saint Petersburg", -3, LocalDateTime.of(2023, 2, 15, 12, 10, 0)));
-        weatherList.add(new Weather(3, "Tallinn", 4, LocalDateTime.of(2022, 3, 17, 23, 5, 0)));
-        weatherList.add(new Weather(2, "Saint Petersburg", 13, LocalDateTime.of(2023, 4, 23, 13, 0, 0)));
-        weatherList.add(new Weather(2, "Saint Petersburg", 24, LocalDateTime.of(2023, 5, 30, 16, 35, 0)));
-        weatherList.add(new Weather(1, "Moscow", 24, LocalDateTime.of(2023, 6, 1, 17, 30, 0)));
+        weatherList.add(new Weather("Moscow", -7, LocalDateTime.of(2022, 1, 16, 10, 15, 0)));
+        weatherList.add(new Weather("Saint Petersburg", -3, LocalDateTime.of(2023, 2, 15, 12, 10, 0)));
+        weatherList.add(new Weather("Tallinn", 4, LocalDateTime.of(2022, 3, 17, 23, 5, 0)));
+        weatherList.add(new Weather("Saint Petersburg", 13, LocalDateTime.of(2023, 4, 23, 13, 0, 0)));
+        weatherList.add(new Weather("Saint Petersburg", 24, LocalDateTime.of(2023, 5, 30, 16, 35, 0)));
+        weatherList.add(new Weather("Moscow", 24, LocalDateTime.of(2023, 6, 1, 17, 30, 0)));
+        //for testing readTemperatureByCity function:
+        weatherList.add(new Weather("Moscow", 15, LocalDateTime.now()));
         return weatherList;
     }
 
@@ -55,6 +118,7 @@ public class Main {
                 .collect(Collectors.groupingBy(Weather::getTemperature));
     }
 
+    /*
     public static void main(String[] args) {
 
         ArrayList<Weather> weatherList = weatherInit();
@@ -75,5 +139,7 @@ public class Main {
         });
 
     }
+
+     */
 
 }
