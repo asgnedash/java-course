@@ -5,17 +5,24 @@ import org.example.fintech.controller.WeatherApiErrorController;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+/**
+ * Service class handling requests to the Weather API.
+ * This class uses a WebClient instance to make reactive web requests to the Weather API endpoints.
+ * It integrates with Resilience4j RateLimiter to control the rate of requests made to the API.
+ * The service methods handle various HTTP statuses and error responses returned by the API,
+ * throwing custom exceptions (WeatherApiErrorController) when specific errors occur.
+ */
+
 @Service
 public class WeatherApiService {
 
-    private WebClient webClient;
-    private String apiKey;
-    private RateLimiter rateLimiter;
+    private final WebClient webClient;
+    private final String apiKey;
+    private final RateLimiter rateLimiter;
 
     public WeatherApiService(@Qualifier("weatherApi") WebClient.Builder webClientBuilder,
                              @Value("${weatherApi.base-url}") String baseUrl,
@@ -28,16 +35,16 @@ public class WeatherApiService {
 
     public Mono<String> getCurrentWeather(String city) {
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder
+                .uri(uriBuilder->uriBuilder
                         .path("/current.json")
                         .queryParam("key", apiKey)
                         .queryParam("q", city)
                         .build())
                 .retrieve()
                 .onStatus(
-                        status -> status.equals(HttpStatus.UNAUTHORIZED),
-                        clientResponse -> clientResponse.bodyToMono(String.class)
-                                .flatMap(errorBody -> {
+                        status->status.equals(HttpStatus.UNAUTHORIZED),
+                        clientResponse->clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody->{
                                     if (errorBody.contains("1002")) {
                                         return Mono.error(new WeatherApiErrorController(401, 1002, "API key not provided"));
                                     }
@@ -48,9 +55,9 @@ public class WeatherApiService {
                                 })
                 )
                 .onStatus(
-                        status -> status.equals(HttpStatus.BAD_REQUEST),
-                        clientResponse -> clientResponse.bodyToMono(String.class)
-                                .flatMap(errorBody -> {
+                        status->status.equals(HttpStatus.BAD_REQUEST),
+                        clientResponse->clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody->{
                                     if (errorBody.contains("1003")) {
                                         return Mono.error(new WeatherApiErrorController(400, 1003, "Parameter 'q' not provided"));
                                     }
@@ -73,9 +80,9 @@ public class WeatherApiService {
                                 })
                 )
                 .onStatus(
-                        status -> status.equals(HttpStatus.FORBIDDEN),
-                        clientResponse -> clientResponse.bodyToMono(String.class)
-                                .flatMap(errorBody -> {
+                        status->status.equals(HttpStatus.FORBIDDEN),
+                        clientResponse->clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody->{
                                     if (errorBody.contains("2007")) {
                                         return Mono.error(new WeatherApiErrorController(403, 2007, "API key has exceeded calls per month quota"));
                                     }
@@ -89,12 +96,9 @@ public class WeatherApiService {
                                 })
                 )
                 .onStatus(
-                        status -> status.equals(HttpStatus.OK) || status.equals(HttpStatus.NOT_FOUND) || status.equals(HttpStatus.INTERNAL_SERVER_ERROR),
-                        clientResponse -> clientResponse.bodyToMono(String.class)
-                                .flatMap(errorBody -> {
-                                    if (clientResponse.statusCode().equals(HttpStatus.OK)) {
-                                        return Mono.error(new Exception("OK"));
-                                    }
+                        status->status.equals(HttpStatus.NOT_FOUND) || status.equals(HttpStatus.INTERNAL_SERVER_ERROR),
+                        clientResponse->clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody->{
                                     if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) {
                                         return Mono.error(new Exception("Not Found"));
                                     }
