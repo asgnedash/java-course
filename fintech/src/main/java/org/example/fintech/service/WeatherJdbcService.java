@@ -46,7 +46,7 @@ public class WeatherJdbcService {
             isWeatherTypeExists = false;
         } else if (jdbcTemplate.queryForList(sqlWeatherTypeCheck, type).size() > 1) {
             isWeatherTypeExists = false;
-            throw new RuntimeException("More than 1 id for one weather type");
+            throw new RuntimeException("More than one id for one weather type");
         } else {
             weather_type_id = jdbcTemplate.queryForObject(sqlWeatherTypeCheck, Long.class, type);
         }
