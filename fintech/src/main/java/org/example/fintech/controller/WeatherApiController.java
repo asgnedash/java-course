@@ -7,12 +7,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.fintech.service.WeatherApiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+
+/**
+ * Controller class handling weather-related API requests.
+ * This class defines endpoints for receiving weather information based on the provided city.
+ * It utilizes the WeatherApiService to fetch current weather data.
+ */
 
 @RestController
 @RequestMapping("/weather")

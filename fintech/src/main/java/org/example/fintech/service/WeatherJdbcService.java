@@ -6,8 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.*;
-import java.util.List;
+import java.sql.Timestamp;
+
+/**
+ * Service class providing methods to perform CRUD operations
+ * for weather-related data using JDBC with Spring's JdbcTemplate.
+ * This class handles interactions with the weather database table.
+ * The class also manages different transaction isolation levels for specific create operations.
+ */
 
 @Service
 public class WeatherJdbcService {
@@ -31,7 +37,7 @@ public class WeatherJdbcService {
             isCityExists = false;
         } else if (jdbcTemplate.queryForList(sqlCityCheck, city).size() > 1) {
             isCityExists = false;
-            throw new RuntimeException("More than 1 id for one city");
+            throw new RuntimeException("More than one id for one city");
         } else {
             city_id = jdbcTemplate.queryForObject(sqlCityCheck, Long.class, city);
         }

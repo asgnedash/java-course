@@ -4,6 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class providing methods to perform CRUD operations
+ * for city entities using JDBC with Spring's JdbcTemplate.
+ * This class is responsible for interacting with the database to manage city data.
+ */
+
 @Service
 public class CityJdbcService {
 

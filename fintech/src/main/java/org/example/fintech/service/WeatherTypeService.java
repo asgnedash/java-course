@@ -5,6 +5,11 @@ import org.example.fintech.repository.WeatherTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class providing methods to interact with weather type data in the application.
+ * This class encapsulates operations such as saving, retrieving, and deleting weather types.
+ */
+
 @Service
 public class WeatherTypeService {
     private final WeatherTypeRepository weatherTypeRepository;

@@ -5,6 +5,11 @@ import org.example.fintech.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class providing methods to perform CRUD operations for City objects
+ * using methods from the injected CityRepository.
+ */
+
 @Service
 public class CityService {
     private final CityRepository cityRepository;

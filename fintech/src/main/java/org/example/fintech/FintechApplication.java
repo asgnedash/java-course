@@ -1,14 +1,7 @@
 package org.example.fintech;
 
-import org.example.fintech.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class FintechApplication {
