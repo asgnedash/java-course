@@ -8,7 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Setter  @Getter
+@Setter
+@Getter
 public class Weather {
 
     private static int id = 1;

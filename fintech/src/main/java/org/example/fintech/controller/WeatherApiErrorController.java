@@ -1,7 +1,10 @@
 package org.example.fintech.controller;
 
 import lombok.Getter;
-import org.springframework.web.client.HttpStatusCodeException;
+
+/**
+ * Custom exception class representing errors that can occur while interacting with the Weather API.
+ */
 
 @Getter
 public class WeatherApiErrorController extends RuntimeException {
