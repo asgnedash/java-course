@@ -4,11 +4,11 @@
                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
     <changeSet id="create-user" author="asgnedash">
-        <createTable tableName="User">
+        <createTable tableName="users">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="login" type="VARCHAR(255)">
+            <column name="username" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="password" type="VARCHAR(255)">
@@ -18,10 +18,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="User"
+        <addForeignKeyConstraint baseTableName="users"
                                  baseColumnNames="role_id"
                                  constraintName="fk_role"
-                                 referencedTableName="Role"
+                                 referencedTableName="roles"
                                  referencedColumnNames="id"
                                  onDelete="SET NULL"/>
     </changeSet>

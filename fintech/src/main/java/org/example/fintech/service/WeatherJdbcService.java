@@ -87,22 +87,22 @@ public class WeatherJdbcService {
     }
 
     public String getById(Long id) {
-        String sql = "SELECT * " + "FROM weather w " + "JOIN city c ON w.city_id = c.id " + "JOIN weathertype wt ON w.weather_type_id = wt.id " + "WHERE w.id = ?";
+        String sql = "SELECT * " + "FROM weathers w " + "JOIN city c ON w.city_id = c.id " + "JOIN weathertype wt ON w.weather_type_id = wt.id " + "WHERE w.id = ?";
         return jdbcTemplate.queryForList(sql, id).toString();
     }
 
     public String getAll() {
-        String sql = "SELECT * " + "FROM weather w " + "JOIN city c ON w.city_id = c.id " + "JOIN weathertype wt ON w.weather_type_id = wt.id ";
+        String sql = "SELECT * " + "FROM weathers w " + "JOIN city c ON w.city_id = c.id " + "JOIN weathertype wt ON w.weather_type_id = wt.id ";
         return jdbcTemplate.queryForList(sql).toString();
     }
 
     public void update(long id, double temperature) {
-        String sql = "UPDATE weather SET temperature = ? WHERE id = ?";
+        String sql = "UPDATE weathers SET temperature = ? WHERE id = ?";
         jdbcTemplate.update(sql, temperature, id);
     }
 
     public void delete(long id) {
-        String sql = "DELETE FROM weather WHERE id = (?)";
+        String sql = "DELETE FROM weathers WHERE id = (?)";
         jdbcTemplate.update(sql, id);
     }
 }

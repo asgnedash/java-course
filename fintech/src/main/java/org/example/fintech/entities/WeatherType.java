@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "Weathertype")
+@Table(name = "weather_types")
 public class WeatherType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

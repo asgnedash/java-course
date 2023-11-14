@@ -4,9 +4,9 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
     <changeSet id="insert-user-admin" author="asgnedash">
-        <insert tableName="User">
-            <column name="login" value="Admin"/>
-            <column name="password" value="Admin"/>
+        <insert tableName="users">
+            <column name="username" value="Admin"/>
+            <column name="password" value="$2a$10$JtThJ0R8DF0tfGjyB1UBqu.fpkJV3Z87S3qNyfzgRAOPer1xuk3Qe"/>
             <column name="role_id" value="1"/>
         </insert>
     </changeSet>

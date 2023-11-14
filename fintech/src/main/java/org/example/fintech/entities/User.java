@@ -7,20 +7,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "login", nullable = false, length = 255)
-    private String city;
+    @Column(name = "username", nullable = false, length = 255)
+    private String username;
 
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Column(name = "role_id", nullable = false, length = 255)
-    private Long roleId;
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role roleId;
 }
