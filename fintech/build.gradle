@@ -44,6 +44,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
+
+    implementation 'io.swagger.core.v3:swagger-core:2.2.15'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger2:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
+    testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
+    implementation 'org.springframework:spring-aop:6.1.0'
 }
 
 test {

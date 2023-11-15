@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.fintech.service.WeatherApiService;
 import org.example.fintech.service.WeatherJdbcService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,6 +84,7 @@ public class WeatherApiController {
             )
     })
     @GetMapping("/{city}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public Mono<String> getWeather(@PathVariable String city) {
         return weatherApiService.getCurrentWeather(city)
                 .map(json->{
