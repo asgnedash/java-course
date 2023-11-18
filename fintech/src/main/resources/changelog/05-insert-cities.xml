@@ -4,55 +4,55 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
     <changeSet id="insert-cities" author="asgnedash">
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Cherkessk"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Kaliningrad"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Krasnodar"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Krasnoyarsk"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Makhachkala"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Mineralnye Vody"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Moscow"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Nevinnomyssk"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Petrozavodsk"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Saint Petersburg"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Samara"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Saratov"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Surgut"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Togliatti"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Vladikavkaz"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Vladivostok"/>
         </insert>
-        <insert tableName="City">
+        <insert tableName="cities">
             <column name="city" value="Yekaterinburg"/>
         </insert>
     </changeSet>
