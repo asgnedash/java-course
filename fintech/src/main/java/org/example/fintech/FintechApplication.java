@@ -1,7 +1,11 @@
 package org.example.fintech;
 
+import org.example.fintech.cache.WeatherCache;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 
 @SpringBootApplication
 public class FintechApplication {
@@ -47,6 +51,14 @@ public class FintechApplication {
     }
 
      */
+    @Value("${cache.capacity}")
+    private int capacity;
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void loadCache() {
+        WeatherCache weatherCache = new WeatherCache(capacity);
+    }
+
 
     public static void main(String[] args) {
         SpringApplication.run(FintechApplication.class, args);

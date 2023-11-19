@@ -25,13 +25,20 @@ public class WeatherJdbcService {
     @Autowired
     private WeatherTypeJdbcService weatherTypeJdbcService;
 
+    public WeatherJdbcService(JdbcTemplate jdbcTemplate, CityJdbcService cityJdbcService, WeatherTypeJdbcService weatherTypeJdbcService) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.cityJdbcService = cityJdbcService;
+        this.weatherTypeJdbcService = weatherTypeJdbcService;
+    }
+
+    @Transactional
     public void create(String city, String type, double temperature, Timestamp timestamp) {
         Boolean isCityExists = true;
         Boolean isWeatherTypeExists = true;
-        long city_id = 0, weather_type_id = 0;
-        String sqlCityCheck = "SELECT id FROM city WHERE city = ?";
-        String sqlWeatherTypeCheck = "SELECT id FROM weathertype WHERE type = ?";
-        String sql = "INSERT INTO weather (city_id, weather_type_id, temperature, timestamp) VALUES (?, ?, ?, ?)";
+        long city_id = 1, weather_type_id = 1;
+        String sqlCityCheck = "SELECT id FROM cities WHERE city = ?";
+        String sqlWeatherTypeCheck = "SELECT id FROM weather_types WHERE type = ?";
+        String sql = "INSERT INTO weathers (city_id, weather_type_id, temperature, timestamp) VALUES (?, ?, ?, ?)";
 
         if (jdbcTemplate.queryForList(sqlCityCheck, city).isEmpty()) {
             isCityExists = false;
@@ -49,6 +56,7 @@ public class WeatherJdbcService {
             throw new RuntimeException("More than one id for one weather type");
         } else {
             weather_type_id = jdbcTemplate.queryForObject(sqlWeatherTypeCheck, Long.class, type);
+            System.out.println(weather_type_id);
         }
         if (isCityExists && isWeatherTypeExists) {
             jdbcTemplate.update(sql, city_id, weather_type_id, temperature, timestamp);
@@ -87,12 +95,12 @@ public class WeatherJdbcService {
     }
 
     public String getById(Long id) {
-        String sql = "SELECT * " + "FROM weathers w " + "JOIN city c ON w.city_id = c.id " + "JOIN weathertype wt ON w.weather_type_id = wt.id " + "WHERE w.id = ?";
+        String sql = "SELECT * " + "FROM weathers w " + "JOIN cities c ON w.city_id = c.id " + "JOIN weather_types wt ON w.weather_type_id = wt.id " + "WHERE w.id = ?";
         return jdbcTemplate.queryForList(sql, id).toString();
     }
 
     public String getAll() {
-        String sql = "SELECT * " + "FROM weathers w " + "JOIN city c ON w.city_id = c.id " + "JOIN weathertype wt ON w.weather_type_id = wt.id ";
+        String sql = "SELECT * " + "FROM weathers w " + "JOIN cities c ON w.city_id = c.id " + "JOIN weather_types wt ON w.weather_type_id = wt.id ";
         return jdbcTemplate.queryForList(sql).toString();
     }
 
