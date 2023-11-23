@@ -1,33 +1,57 @@
 package org.example.fintech.cache;
 
-import org.example.fintech.entities.Weather;
-import org.springframework.beans.factory.annotation.Value;
-import org.w3c.dom.ls.LSOutput;
+import org.example.fintech.DTO.WeatherDTO;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class WeatherCache {
-    @Value("${cache.capacity}")
-    private final int capacity;
-    Map<String, Weather> cache;
 
-    public WeatherCache(int capacity) {
-        this.capacity = capacity;
-        this.cache = Collections.synchronizedMap(new LinkedHashMap<String, Weather>(capacity + 1, 1.0f, true)
+    private int capacity;
+
+    @Override
+    public String toString() {
+        return "WeatherCache{" +
+                "capacity=" + capacity +
+                ", cache=" + cache +
+                '}';
+    }
+
+    private Map<String, WeatherDTO> cache;
+
+    public WeatherCache() {
+        Properties properties = new Properties();
+        try {
+            properties.load(Objects.requireNonNull(WeatherCache.class.getClassLoader().getResourceAsStream("application.properties")));
+            this.capacity = Integer.parseInt(properties.getProperty("cache.course.size"));
+        } catch (IOException | NullPointerException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        this.cache = Collections.synchronizedMap(new LinkedHashMap<String, WeatherDTO>(capacity + 1, 1.0f, true)
         {
             @Override
-            public boolean removeEldestEntry(Map.Entry<String, Weather> eldest) {
+            public boolean removeEldestEntry(Map.Entry<String, WeatherDTO> eldest) {
                 return size() > capacity;
             }
         });
     }
 
-    public Optional<Weather> get(String city) {
+    public Optional<WeatherDTO> get(String city) {
         return Optional.ofNullable(cache.get(city));
     }
 
-    public void put(Weather weather) {
-        cache.put(weather.getCity().getCity(), weather);
+    public void put(String city, String weatherType, Double temperature, LocalDateTime timestamp) {
+        System.out.println(city + weatherType + temperature + timestamp);
+        WeatherDTO dto = new WeatherDTO();
+        dto.setCity(city);
+        dto.setTemperature(temperature);
+        dto.setWeatherType(weatherType);
+        dto.setTimestamp(LocalDateTime.now());
+        System.out.println(dto.toString());
+        cache.put(city, dto);
+        System.out.println(cache.toString());
     }
 
     public void remove(String city) {

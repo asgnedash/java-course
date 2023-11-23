@@ -51,12 +51,10 @@ public class FintechApplication {
     }
 
      */
-    @Value("${cache.capacity}")
-    private int capacity;
 
     @EventListener(ApplicationReadyEvent.class)
     public void loadCache() {
-        WeatherCache weatherCache = new WeatherCache(capacity);
+        WeatherCache weatherCache = new WeatherCache();
     }
 
 
