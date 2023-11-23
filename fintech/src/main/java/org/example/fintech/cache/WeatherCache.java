@@ -43,15 +43,12 @@ public class WeatherCache {
     }
 
     public void put(String city, String weatherType, Double temperature, LocalDateTime timestamp) {
-        System.out.println(city + weatherType + temperature + timestamp);
         WeatherDTO dto = new WeatherDTO();
         dto.setCity(city);
         dto.setTemperature(temperature);
         dto.setWeatherType(weatherType);
         dto.setTimestamp(LocalDateTime.now());
-        System.out.println(dto.toString());
         cache.put(city, dto);
-        System.out.println(cache.toString());
     }
 
     public void remove(String city) {
