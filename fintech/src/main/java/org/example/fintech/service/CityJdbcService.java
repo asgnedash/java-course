@@ -17,27 +17,27 @@ public class CityJdbcService {
     private JdbcTemplate jdbcTemplate;
 
     public void create(String city) {
-        String sql = "INSERT INTO city (city) VALUES (?)";
+        String sql = "INSERT INTO cities (city) VALUES (?)";
         jdbcTemplate.update(sql, city);
     }
 
     public String getById(Long id) {
-        String sql = "SELECT * FROM city WHERE id = ?";
+        String sql = "SELECT * FROM cities WHERE id = ?";
         return jdbcTemplate.queryForList(sql, id).toString();
     }
 
     public String getAll() {
-        String sql = "SELECT * FROM city";
+        String sql = "SELECT * FROM cities";
         return jdbcTemplate.queryForList(sql).toString();
     }
 
     public void update(long id, String city) {
-        String sql = "UPDATE city SET city = ? WHERE id = ?";
+        String sql = "UPDATE cities SET city = ? WHERE id = ?";
         jdbcTemplate.update(sql, city, id);
     }
 
     public void delete(long id) {
-        String sql = "DELETE FROM city WHERE id = (?)";
+        String sql = "DELETE FROM cities WHERE id = (?)";
         jdbcTemplate.update(sql, id);
     }
 }

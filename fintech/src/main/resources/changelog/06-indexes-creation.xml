@@ -1,0 +1,19 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="createIndexForCityTable" author="asgnedash">
+        <createIndex indexName="idx_cities_city" tableName="cities">
+            <column name="city"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="createIndexForWeatherTable" author="asgnedash">
+        <createIndex indexName="idx_weathers_city_weather_type" tableName="weathers">
+            <column name="city_id"/>
+            <column name="weather_type_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

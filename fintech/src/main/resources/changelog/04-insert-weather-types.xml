@@ -4,31 +4,31 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
     <changeSet id="insert-weather-types" author="asgnedash">
-        <insert tableName="WeatherType">
+        <insert tableName="weather_types">
             <column name="type" value="Clear"/>
         </insert>
-        <insert tableName="WeatherType">
+        <insert tableName="weather_types">
             <column name="type" value="Cloudy"/>
         </insert>
-        <insert tableName="WeatherType">
+        <insert tableName="weather_types">
             <column name="type" value="Partly cloudy"/>
         </insert>
-        <insert tableName="WeatherType">
+        <insert tableName="weather_types">
             <column name="type" value="Fog"/>
         </insert>
-        <insert tableName="WeatherType">
+        <insert tableName="weather_types">
             <column name="type" value="Windy"/>
         </insert>
-        <insert tableName="WeatherType">
+        <insert tableName="weather_types">
             <column name="type" value="Thunderstorm"/>
         </insert>
-        <insert tableName="WeatherType">
+        <insert tableName="weather_types">
             <column name="type" value="Rain"/>
         </insert>
-        <insert tableName="WeatherType">
+        <insert tableName="weather_types">
             <column name="type" value="Drizzle"/>
         </insert>
-        <insert tableName="WeatherType">
+        <insert tableName="weather_types">
             <column name="type" value="Snow"/>
         </insert>
     </changeSet>

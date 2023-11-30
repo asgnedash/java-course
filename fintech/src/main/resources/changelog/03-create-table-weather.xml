@@ -4,7 +4,7 @@
                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
     <changeSet id="create-weather" author="asgnedash">
-        <createTable tableName="Weather">
+        <createTable tableName="weathers">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -22,17 +22,17 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="Weather"
+        <addForeignKeyConstraint baseTableName="weathers"
                                  baseColumnNames="city_id"
                                  constraintName="fk_city"
-                                 referencedTableName="City"
+                                 referencedTableName="cities"
                                  referencedColumnNames="id"
                                  onDelete="SET NULL"/>
 
-        <addForeignKeyConstraint baseTableName="Weather"
+        <addForeignKeyConstraint baseTableName="weathers"
                                  baseColumnNames="weather_type_id"
                                  constraintName="fk_weather_type"
-                                 referencedTableName="WeatherType"
+                                 referencedTableName="weather_types"
                                  referencedColumnNames="id"
                                  onDelete="SET NULL"/>
     </changeSet>

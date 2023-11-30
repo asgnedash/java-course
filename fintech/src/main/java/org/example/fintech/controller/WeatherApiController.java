@@ -8,9 +8,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.example.fintech.DTO.WeatherDTO;
+import org.example.fintech.cache.WeatherCache;
 import org.example.fintech.service.WeatherApiService;
 import org.example.fintech.service.WeatherJdbcService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +23,8 @@ import reactor.core.publisher.Mono;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Controller class handling weather-related API requests.
@@ -30,11 +36,16 @@ import java.time.LocalDateTime;
 @RequestMapping("/weather")
 public class WeatherApiController {
 
+    private static WeatherCache weatherCache = new WeatherCache();
+
     private final WeatherApiService weatherApiService;
 
+    private final WeatherJdbcService weatherJdbcService;
+
     @Autowired
-    public WeatherApiController(WeatherApiService weatherApiService) {
+    public WeatherApiController(WeatherApiService weatherApiService, WeatherJdbcService weatherJdbcService) {
         this.weatherApiService = weatherApiService;
+        this.weatherJdbcService = weatherJdbcService;
     }
 
     @Operation(summary = "Receive the weather")
@@ -83,25 +94,34 @@ public class WeatherApiController {
             )
     })
     @GetMapping("/{city}")
+    //@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public Mono<String> getWeather(@PathVariable String city) {
-        return weatherApiService.getCurrentWeather(city)
-                .map(json->{
-                    try {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        JsonNode jsonNode = objectMapper.readTree(json);
-                        String name = jsonNode.get("location").get("name").asText();
-                        double temp_c = jsonNode.get("current").get("temp_c").asDouble();
-                        String text = jsonNode.get("current").get("condition").get("text").asText();
+//        if (weatherCache.get(city).isPresent()) {
+//            return Mono.just(weatherCache.get(city).toString());
+//        } else {
+            return weatherApiService.getCurrentWeather(city)
+                    .map(json->{
+                        try {
+                            System.out.println(1);
+                            WeatherDTO dto = jsonToDTO(json);
+                            System.out.println(dto.toString());
+                            return json;
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException("Failed to process weather data", e);
+                        }
+                    });
+//        }
+    }
 
-                        WeatherJdbcService weatherJdbcService = new WeatherJdbcService();
-                        weatherJdbcService.createWithReadUncommittedIsolation(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
-                        weatherJdbcService.createWithReadCommittedIsolation(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
-                        weatherJdbcService.createWithRepeatableReadIsolation(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
-                        weatherJdbcService.createWithSerializableIsolation(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
-                        return json;
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException("Failed to process weather data", e);
-                    }
-                });
+    public WeatherDTO jsonToDTO(String json) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(json);
+        String name = jsonNode.get("location").get("name").asText();
+        double temp_c = jsonNode.get("current").get("temp_c").asDouble();
+        String text = jsonNode.get("current").get("condition").get("text").asText();
+        WeatherDTO dto = new WeatherDTO(name, text, temp_c, LocalDateTime.now());
+        weatherJdbcService.create(name, text, temp_c, Timestamp.valueOf(LocalDateTime.now()));
+        //weatherCache.put(name, text, temp_c, LocalDateTime.now());
+        return dto;
     }
 }

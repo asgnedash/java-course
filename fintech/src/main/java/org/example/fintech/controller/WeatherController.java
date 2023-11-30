@@ -9,6 +9,7 @@ import org.example.fintech.service.WeatherService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -33,6 +34,7 @@ public class WeatherController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Weather.class)))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{city}")
     public ResponseEntity<Object> createWeather(@PathVariable String city, @RequestParam("temperature") double temperature,
                                                 @RequestParam("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timestamp) {
@@ -55,6 +57,7 @@ public class WeatherController {
                             schema = @Schema(implementation = Double.class))),
             @ApiResponse(responseCode = "404", description = "Not Found")
     })
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/{city}")
     public ResponseEntity<Object> readTemperatureByCity(@PathVariable String city) {
         try {
@@ -77,6 +80,7 @@ public class WeatherController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Weather.class)))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{city}")
     public ResponseEntity<Object> updateWeather(@PathVariable String city, @RequestParam("temperature") double temperature,
                                                 @RequestParam("timestamp") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timestamp) {
@@ -98,6 +102,7 @@ public class WeatherController {
     @Operation(summary = "Delete the city", responses = {
             @ApiResponse(responseCode = "200", description = "OK")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{city}")
     public ResponseEntity<Object> deleteWeather(@PathVariable String city) {
         try {
