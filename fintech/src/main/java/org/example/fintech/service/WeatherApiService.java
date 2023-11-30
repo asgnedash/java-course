@@ -2,6 +2,7 @@ package org.example.fintech.service;
 
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import org.example.fintech.controller.WeatherApiErrorController;
+import org.example.fintech.entities.Weather;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

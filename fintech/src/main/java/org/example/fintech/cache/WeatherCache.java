@@ -51,6 +51,10 @@ public class WeatherCache {
         cache.put(city, dto);
     }
 
+    public void put(WeatherDTO weatherDTO) {
+        cache.put(weatherDTO.getCity(), weatherDTO);
+    }
+
     public void remove(String city) {
         cache.remove(city);
     }

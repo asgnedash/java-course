@@ -54,6 +54,8 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
     implementation 'org.springframework:spring-aop:6.1.0'
+
+    implementation 'org.springframework.kafka:spring-kafka'
 }
 
 test {

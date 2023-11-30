@@ -1,5 +1,6 @@
 package org.example.fintech.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +8,7 @@ import lombok.Setter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class WeatherDTO {
 
     private String city;
